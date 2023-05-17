@@ -61,6 +61,16 @@
 
                     {% if user.is_superuser or user.is_staff %}
                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbar-reports" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                        <div class="dropdown-menu" aria-labelledby="navbar-help">
+                            <a class="dropdown-item" href="{% url "reports_subscribers" %}">Subscribers</a>
+                            <a class="dropdown-item" href="{% url "reports_messages" %}">Messages</a>
+                        </div>
+                    </li>
+                    {% endif %}
+                    
+                    {% if user.is_superuser or user.is_staff %}
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbar-admin" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                         <div class="dropdown-menu" aria-labelledby="navbar-admin">
                             <a class="dropdown-item" href="{% url "archive_admin_console" %}">Console</a>
@@ -80,8 +90,8 @@
                         </ul>
                     </li>
                     {% endif %}
-                    {% if user.is_authenticated %}
 
+                    {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user }}</a>
                         <ul class="dropdown-menu">
