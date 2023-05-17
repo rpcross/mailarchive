@@ -80,12 +80,21 @@
                     </li>
                     {% endif %}
                     {% if user.is_authenticated %}
-                    <li class="nav-item navbar-text pipe">{{ user}}</li>
-                    <li class="nav-item"> 
-                        <form action="{% url 'oidc_logout' %}" method="post">
-                            {% csrf_token %}
-                            <input class="nav-link btn-link-custom" type="submit" value="Logout">
-                        </form>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user }}</a>
+                        <ul class="dropdown-menu">
+                        {% if server_mode == "production" or server_mode == "development" %}
+                            <li>
+                                <form action="{% url 'oidc_logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <input id="id_signout" type="submit" value="Sign Out">
+                                </form>
+                            </li>
+                        {% else %}
+                            <li><a class="dropdown-item" id="dt_signout_link" href="{% url 'reg-logout' %}">Sign Out</a></li>
+                        {% endif %}
+                        </ul>
                     </li>
                     {% else %}
                     <li class="nav-item">
