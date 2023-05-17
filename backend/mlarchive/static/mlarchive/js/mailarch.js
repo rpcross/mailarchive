@@ -481,6 +481,7 @@ var mailarch = {
         if (mailarch.isSmallViewport()) {
             return true;
         }
+        // for mouse drag
         mailarch.$splitterPane.draggable({
             axis:"y",
             //containment:"parent",
@@ -497,6 +498,28 @@ var mailarch = {
                 // mailarch.checkMessageListScrollBar();
             }
         });
+        // touch drag (tablet)
+        mailarch.$splitterPane.on('touchstart', mailarch.splitterTouchStart);
+        mailarch.$splitterPane.on('touchend', mailarch.splitterTouchEnd);
+    },
+
+    splitterTouchStart: function(event) {
+        $(this).on('touchmove', mailarch.splitterMove);
+        // mailarch.splitterMove(e);       // required?
+    },
+
+    splitterTouchEnd: function(event) {
+        $(this).off('touchmove');
+        var top = event.pageY;
+        mailarch.splitterTop = top;
+        $.cookie("splitter",top);
+        console.log(top);
+    },
+
+    splittterMove: function(event) {
+        var top = event.pageY;
+        mailarch.$listPane.css("height",top);
+        mailarch.$viewPane.css("top",top + mailarch.splitterHeight);
     },
     
     isSmallViewport: function() {
