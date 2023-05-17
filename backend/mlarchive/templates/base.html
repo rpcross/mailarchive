@@ -88,7 +88,7 @@
                             <li>
                                 <form action="{% url 'oidc_logout' %}" method="post">
                                     {% csrf_token %}
-                                    <input id="id_signout" type="submit" value="Sign Out">
+                                    <button class="dropdown-item" id="id_signout" type="submit">Sign Out</button>
                                 </form>
                             </li>
                         {% else %}
