@@ -476,8 +476,12 @@ var mailarch = {
     },
     
     initSplitter: function() {
-        // no splitter for mobile
+        // setup
         mailarch.splitterTop = mailarch.getSplitterTop();
+        const msgPanes = document.getElementById("msg-panes");
+        mailarch.msgPanesOffset = msgPanes.getBoundingClientRect().y;
+        // console.log('initializing splitter. top:' + mailarch.splitterTop);
+        
         if (mailarch.isSmallViewport()) {
             return true;
         }
@@ -498,28 +502,36 @@ var mailarch = {
                 // mailarch.checkMessageListScrollBar();
             }
         });
-        // touch drag (tablet)
+
+        // for touch drag (tablet)
         mailarch.$splitterPane.on('touchstart', mailarch.splitterTouchStart);
         mailarch.$splitterPane.on('touchend', mailarch.splitterTouchEnd);
     },
 
-    splitterTouchStart: function(event) {
+    splitterTouchStart: function(e) {
         $(this).on('touchmove', mailarch.splitterMove);
         // mailarch.splitterMove(e);       // required?
     },
 
-    splitterTouchEnd: function(event) {
+    splitterTouchEnd: function(e) {
         $(this).off('touchmove');
-        var top = event.pageY;
+        const top = e.pageY - mailarch.msgPanesOffset;
         mailarch.splitterTop = top;
         $.cookie("splitter",top);
-        console.log(top);
+        // console.log('TouchEnd top:' + top);
     },
 
-    splittterMove: function(event) {
-        var top = event.pageY;
+    splitterMove: function(e) {
+        /* Get the touch screen y-coordinate from e.pageY.
+        Subtract the msgPanes Y offset to get the y-coordinate
+        for the splitter, which is relative to parent element.
+        */
+        e.preventDefault();
+        const top = e.pageY - mailarch.msgPanesOffset;
         mailarch.$listPane.css("height",top);
         mailarch.$viewPane.css("top",top + mailarch.splitterHeight);
+        mailarch.$splitterPane.css("top",top);
+        // console.log('TouchMove top:' + top);
     },
     
     isSmallViewport: function() {
