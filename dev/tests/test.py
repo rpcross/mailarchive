@@ -27,6 +27,9 @@ BLOBDB_DATABASE = 'default'
 # Turn off blob replication for testing
 BLOBDB_REPLICATION['ENABLED'] = False
 
+# Apply archive.derived refs inline, on commit, instead of through Celery
+DERIVED_ARTIFACTS_ASYNC = False
+
 # Blob replication storage for testing
 import botocore.config
 for storagename in ARTIFACT_STORAGE_NAMES:
